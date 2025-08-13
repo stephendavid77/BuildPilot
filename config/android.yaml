@@ -1,0 +1,7 @@
+git_command: "git pull origin master"
+build_commands:
+  - "./gradlew clean"
+  - "./gradlew assembleDebug"
+indicators:
+  - "build.gradle"
+  - "AndroidManifest.xml"

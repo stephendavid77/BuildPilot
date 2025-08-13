@@ -1,0 +1,6 @@
+git_command: "git pull origin main"
+build_commands:
+  - "pod install"
+indicators:
+  - ".xcodeproj"
+  - "Podfile"

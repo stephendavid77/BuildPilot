@@ -1,0 +1,72 @@
+# ----------------------------------------------------------------------------------------
+# Project Selection Logic (IMPORTANT - Priority Based Filtering)
+#
+# The logic below determines which projects are picked from the base_directory.
+# The filters are applied in the following strict priority order:
+#
+# 1. include_names (comma-separated):
+#    - If this is set (non-empty), ONLY these projects will be considered.
+#    - All others will be ignored, even if they match regex filters or are present in the folder.
+#
+# 2. exclude_names (comma-separated):
+#    - If a project is listed here, it will be excluded EVEN if it's in include_names.
+#
+# 3. include_pattern (regex):
+#    - Used ONLY if include_names is empty.
+#    - Only projects matching this pattern will be considered.
+#
+# 4. exclude_pattern (regex):
+#    - Used with or after include_pattern.
+#    - Any project matching this pattern will be excluded.
+#
+# 5. Default (no filters provided):
+#    - If all filters are empty, ALL directories under base_directory are included.
+#
+# Example:
+#   include_names: "xapi,booking-api"
+#   exclude_names: "xapi"
+#   => Only "booking-api" will be built.
+
+#   build_priority (comma-separated):
+#     - Inside `scan` section.
+#     - Specifies the order of projects to build sequentially (e.g., for dependencies).
+#     - All other selected projects will be built in parallel after these.
+
+# ----------------------------------------------------------------------------------------
+
+scan:
+  base_directory: "/Users/srinivasan.arulsivam/projects/xapi"
+  include_names: ""        # Highest priority (optional)
+  exclude_names: ""               # Highest priority (optional)
+  include_pattern: ".*mobile.*|.*platform.*"             # Regex pattern
+  exclude_pattern: ".*test.*"              # Regex pattern
+  build_priority: "macys-platform-spring,mobile_xapi_common"
+
+project_overrides:
+  xapi:
+    build_command: "./custom-spring-boot-build.sh"
+
+git:
+  pull_command: "git pull origin main"
+
+build_commands:
+  android: "./gradlew assembleDebug"
+  ios: "xcodebuild -scheme MyApp"
+  springboot: "mvn clean install"
+
+project_types:
+  android:
+    indicators:
+      - "build.gradle"
+      - "AndroidManifest.xml"
+  ios:
+    indicators:
+      - "Podfile"
+      - ".xcodeproj"
+  springboot:
+    indicators:
+      - "pom.xml"
+      - "src/main/java"
+
+logging:
+  enabled: true
