@@ -18,7 +18,7 @@ build_profiles:
 
   android:
     base_directory: "/Users/srinivasan.arulsivam/projects/android"
-    include_names: "android_app"
+    include_names: "android-app"
     exclude_names: ""
     include_pattern: ".*"
     exclude_pattern: ""
